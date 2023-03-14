@@ -63,4 +63,6 @@ http://127.0.0.1:8000/docs
        3. Kecepatan tamiya tiap pertandingan adalah konstan/tidak berubah.
                Silahkan jawab pertanyaan dengan menyertakan penjelasannya.
 ### Jawaban
+```
     untuk mendapatkan 3 tamia tecepat di butuh kan 6 kali percobaan sedangkan untuk 5 tamia tercepat di butuh kan 5 kali percobaan. dari 25 tamia di buat dalam 5 grup lalu lakukan 1 kali cobaan pada setiap group dan ambil satu tamia tercepat pada masing-masing grup. setelah mendapatkan tamia tercepat pada masing masing group kemudia lakukan ujicoba kembali untuk mendapaknya 3 tamia tecepat 
+```
