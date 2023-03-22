@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import Column,String,DateTime,Integer,ForeignKey,Date
+from sqlalchemy import Column,String,DateTime,Integer,ForeignKey,Date,Boolean
 from  sqlalchemy.orm import declarative_base,relationship
 
 Base = declarative_base()
@@ -28,17 +28,15 @@ class User(Base):
             "updated":self.updated
         }
     
-class sequence(Base):
+class Sequence(Base):
     __tablename__ = 'sequence'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     sequence_number = Column('sequence_number', Integer)
     group_sequence_id = Column('group_sequence_id', Integer, ForeignKey('group_sequence.id'))
-    users_id = Column('users_id', String(40), ForeignKey('users.id'), nullable=True)
+    call_status =  Column(Boolean, nullable=False, default=False)
     created = Column(Date, nullable=False)
-
-    users = relationship('users')
-    group_sequence = relationship('group_sequence')
+    
 
     def dict(self):
         return{
@@ -48,7 +46,7 @@ class sequence(Base):
         }
 
 
-class group_sequence(Base):
+class GroupSequence(Base):
     __tablename__ = 'group_sequence'
 
     id = Column(Integer, primary_key=True, autoincrement=True)

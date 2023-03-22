@@ -7,8 +7,8 @@ from starlette import  status
 from starlette.requests import Request
 from starlette.responses import Response
 from sqlalchemy.orm import Session
-from data_access.models import User
-from app.schemas import UserCreate,GetUser,ListUserSchema
+from db_models.models import User
+from app.patients.schemas import UserCreate,GetUser,ListUserSchema
 from app.server import SessionLocal
 
 router = APIRouter()
