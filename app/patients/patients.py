@@ -52,6 +52,7 @@ async def update_patient(request: Request, id: uuid.UUID, payload: UserCreate):
             User.id == str(id)).first()
         if user is None:
             raise HTTPException(status_code=404, detail=f"Task with ID {task_id} not found")
+        
         user.name = payload.name
         user.birth_date = payload.birth_date
         user.blood_type = payload.blood_type

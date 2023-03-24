@@ -33,7 +33,7 @@ class Sequence(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     sequence_number = Column('sequence_number', Integer)
-    group_sequence_id = Column('group_sequence_id', Integer, ForeignKey('group_sequence.id'))
+    # group_sequence_id = Column('group_sequence_id', Integer, ForeignKey('group_sequence.id'))
     call_status =  Column(Boolean, nullable=False, default=False)
     created = Column(Date, nullable=False)
     
@@ -46,14 +46,12 @@ class Sequence(Base):
         }
 
 
-class GroupSequence(Base):
-    __tablename__ = 'group_sequence'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column('name', String(150), nullable=False)
-
-    def dict(self):
-        return{
-            "id":self.id,
-            "name":self.name
-        }
+# class GroupSequence(Base):
+#     __tablename__ = 'group_sequence'
+#     id = Column(Integer, primary_key=True, autoincrement=True)
+#     name = Column('name', String(150), nullable=False)
+#     def dict(self):
+#         return{
+#             "id":self.id,
+#             "name":self.name
+#         }

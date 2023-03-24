@@ -12,6 +12,12 @@
 - SQLAlchemy 2.0.5 
 - Elambic
 
+### Install Requirements
+
+```bash
+$ pip3 install -r requirements.txt
+```
+
 ### databse config
 databse type list:
 - mariadb+mariadbconnector
@@ -46,6 +52,13 @@ sudo apt install uvicorn
 untuk menjalan aplikasi, jalankan command berikut pada terminal:
 ```
 uvicorn main:app --reload
+```
+
+Atau jika ingin menggunakan **docker**.
+
+```bash
+$ docker build . -t zicare
+$ docker run -p 8000:8000 zicare
 ```
 
 #### API Documentation

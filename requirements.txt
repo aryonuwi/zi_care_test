@@ -104,12 +104,6 @@ josepy==1.5.0
 jsonpatch==1.10
 jsonpointer==1.10
 jsonschema==4.6.0
-jupyter==1.0.0
-jupyter-client==7.3.4
-jupyter-console==6.4.4
-jupyter-core==4.10.0
-jupyterlab-pygments==0.2.2
-jupyterlab-widgets==1.1.1
 keyring==23.5.0
 kombu==4.6.11
 language-selector==0.1

@@ -1,4 +1,6 @@
-import datetime
+from datetime import date
+from datetime import timedelta
+from dateutil.parser import parse
 
 from typing import List
 from fastapi import APIRouter,status, HTTPException, Depends
@@ -6,39 +8,82 @@ from starlette import  status
 from starlette.requests import Request
 from starlette.responses import Response
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from db_models.models import Sequence
-from app.sequence.schemas import Get,Create,Lists
+from app.sequence.schemas import Get,Lists
 from app.server import SessionLocal
 
 router = APIRouter()
 
-# @router.get("/sequence")
-# async def list_patient(request:Request):
-#     with SessionLocal() as session:
-#         users = session.query(User).all()
+@router.get("/sequence",response_model=Get)
+async def get_latest_call(request:Request):
+    with SessionLocal() as session:
+        today = date.today()
+        yesterday = today - timedelta(days = 1)
+        last_yesterday_number = session.query(Sequence)\
+            .where(Sequence.call_status=='0')\
+            .where(Sequence.created==yesterday)\
+            .order_by(Sequence.sequence_number.desc()).first()
+        
+        if last_yesterday_number is not None:
+            last_yesterday_number.call_status = 1
+            session.add(last_yesterday_number)
+            session.commit()
 
-#     return {"users":users}
+        if now_sequence() is None:
+            sequence_lates =  session.query(Sequence)\
+            .where(Sequence.call_status=='1')\
+            .order_by(Sequence.sequence_number.desc()).first()
+            return sequence_lates.dict()
+        
 
-# @router.get("/sequence/{id}", response_model=GetUser)
-# async def get_patient(request:Request, id:uuid.UUID):
-#     with SessionLocal() as session:
-#         user = session.query(User).filter(User.id == str(id)).first()
-#     if user is None:
-#         raise HTTPException(status_code=404, detail=f"Task with ID {id} not found")
-    
-#     return user.dict()
+    return now_sequence().dict()
 
-# @router.post("/sequence", response_model=GetUser, status_code=status.HTTP_201_CREATED)
-# async def creat_patient(request:Request,  payload: UserCreate):
-#     with SessionLocal() as session:
-#         user = User(
-#             created=datetime.datetime.utcnow(),
-#             updated=datetime.datetime.utcnow(),
-#             name=payload.name,
-#             birth_date=payload.birth_date,
-#             blood_type=payload.blood_type
-#         )
-#         session.add(user)
-#         session.commit()
-#         user = user.dict()
-#     return user
+@router.put("/sequence/next", response_model=Get)
+async def next_sequence_call(request:Request):
+    with SessionLocal() as session:
+        lates_sequence = now_sequence()
+        
+        lates_sequence.call_status = 1
+        session.add(lates_sequence)
+        session.commit()
+
+        if now_sequence() is None:
+            return lates_sequence.dict()
+
+    return now_sequence().dict()
+
+def now_sequence():
+    with SessionLocal() as session:
+        today = date.today()
+        return session.query(Sequence)\
+                .where(Sequence.call_status=='0')\
+                .where(Sequence.created==today)\
+                .first()
+
+@router.post("/sequence", status_code=status.HTTP_201_CREATED)
+async def creat_sequence(request:Request):
+    with SessionLocal() as session:
+        now = date.today()
+        # query = text(f'select MAX(sequence_number) as sequence_number  from sequence where group_sequence_id={payload.group_sequence_id} and created="{now}"')
+        query = text(f'select MAX(sequence_number) as sequence_number  from sequence where created="{now}"')
+        rows = session.execute(query)
+        lates_row = ''
+        for row in rows:
+            lates_row = row
+
+        if lates_row[0] == None:
+            sequence_number = 1
+        else:
+            sequence_number = lates_row[0]+1
+
+        sequence = Sequence(
+            created=parse(now.strftime("%Y-%m-%d")),
+            sequence_number=sequence_number,
+            call_status=0
+        )
+
+        session.add(sequence)
+        session.commit()
+        sequence = sequence.dict()
+    return sequence

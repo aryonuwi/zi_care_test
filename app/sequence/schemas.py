@@ -1,21 +1,18 @@
-from datetime import datetime
+from datetime import date
 from typing import  List, Optional
 from pydantic import BaseModel
 
 class Error(BaseModel):
     detail: Optional[str] = None
 
-class Create(BaseModel):
-    sequence_number:int
-    group_sequence_id:int
-    created:datetime
+# class Create(BaseModel):
+#     # group_sequence_id:int
 
 
 class Get(BaseModel):
     id:int
     sequence_number:int
-    group_sequence_id:int
-    created:datetime
+    created:date
 
     class  Config:
         orm_mode:True
