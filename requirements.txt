@@ -229,8 +229,8 @@ widgetsnbextension==3.6.1
 wrapt==1.14.1
 wsproto==1.0.0
 xdg==5
-xid==1.0.4
--e git+https://github.com/dwin/xid_py@239a096de0ee6c8308773e5c8e5c6f06d72c67dc#egg=xid_py
+# xid==1.0.4
+# -e git+https://github.com/dwin/xid_py@239a096de0ee6c8308773e5c8e5c6f06d72c67dc#egg=xid_py
 xkit==0.0.0
 zipp==1.0.0
 zope.component==4.6.2
